@@ -40,6 +40,7 @@ app.get("/urls.json", (req, res) => {
 app.get("/hello", (req, res) => {
   res.send("<html><body>Hello <b>World</b></body></html>\n");
 });
+
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
@@ -70,6 +71,12 @@ app.post("/urls", (req, res) => {
 
 
 });
+
+app.post("/urls/:shortURL/delete", (req, res) => {
+
+  delete urlDatabase[req.params.shortURL];
+  res.redirect(`http://localhost:8080/urls`)
+  });
 
 
 app.listen(PORT, () => {

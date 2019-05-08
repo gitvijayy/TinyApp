@@ -6,17 +6,15 @@
 </head>
 <div class="container">
 
-  <body style="font-size:20px; padding:50px;">
-    <h1>
-      <p class="text-center">TinyApp</p>
-    </h1>
-    <a class="btn btn-primary btn-lg btn-block" href="http://localhost:8080/urls/new" role="button">Create new
-      TinyURL</a>
+  <body>
+      <a class="btn btn-dark btn-lg btn-block" href="http://localhost:8080/urls/new" role="button">Create new
+        TinyURL</a>
     <table class="table">
       <thead>
         <tr>
           <th scope="col">URL</th>
-          <th scope="col">TinyURL</th>
+          <th scope="col">Shortner</th>
+          <th scope="col">Link</th>
         </tr>
       </thead>
       <tbody>
@@ -24,13 +22,14 @@
         <tr>
          <td><%=longURL%> </td>
           <td><%=shortURL%></td>
+          <!-- <td><a href = "http://localhost:8080/urls/u/"<%= shortURL %> Click hee</a></td> -->
 
         </tr>
 
       </tbody>
     </table>
 
-
+    <p  class="text-center"><a class="btn btn-dark" href="http://localhost:8080/urls" role="button">My URL List</a></p>
   </body>
 
 </div>

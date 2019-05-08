@@ -5,20 +5,17 @@
   <% include ./partials/_header.ejs %>
 </head>
 <div class="container">
-  <div class="container">
+  
 
-    <body style="font-size:20px; padding:50px;">
-      <h1>
-        <p class="text-center">TinyApp</p>
-      </h1>
-      <!-- Add EJS code here -->
-      <a class="btn btn-primary btn-lg btn-block" href="http://localhost:8080/urls/new" role="button">Create new
-        TinyURL</a>
+    <body>
+        <a class="btn btn-dark btn-lg btn-block" href="http://localhost:8080/urls/new" role="button">Create new
+          TinyURL</a>
       <table class="table">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">My URLs</th>
+            <th scope="col">Update</th>
           </tr>
         </thead>
         <tbody>
@@ -26,7 +23,12 @@
           <% for(var key in urls) {%>
           <tr>
             <th scope="row"><%= count += 1 %></th>
-            <td><%=key%>:<%=urls[key]%></td>
+            <td><%=key%> : <%=urls[key]%></td>
+            <td><form method="POST" action= "/urls/<%=key%>/delete"  >
+              <button type="submit" class="btn btn-dark">Edit</button>
+              <button type="submit" class="btn btn-danger">Delete</button>
+            
+            </form></td>
           </tr>
           <% }%>
         </tbody>
