@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ./partials/_header.ejs %>
+</head>
+<div class = "container">
+  <body style="font-size:20px; padding:50px;">
+
+      <h1> <p class="text-left">TinyApp</p></h1>
+
+    <h3>Create TinyURL</h3>
+    <form class="form-inline" action="/urls" method="POST">
+      <div class="form-group mb-2">
+        <label for="longURL">Enter a URL:</label>
+        <input class="form-control" type="text" name="longURL" placeholder="http://" style="width: 300px; margin: 1em">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </body>
+
+</div>
+
+</html>
