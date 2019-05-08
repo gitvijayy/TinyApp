@@ -44,15 +44,19 @@ app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
 
+app.get("/urls/404", (req, res) => {
+  res.render("urls_error");
+});
+
 app.get("/urls/:shortURL", (req, res) => {
   let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
-  templateVars.longURL ? res.render("urls_show", templateVars) : res.send(`404 Not Found`);
+  templateVars.longURL ? res.render("urls_show", templateVars) : res.redirect(`http://localhost:8080/urls/404`);
 });
 
 app.get("/u/:shortURL", (req, res) => {
   
   const longURL = urlDatabase[req.params.shortURL];
-  longURL ? res.redirect(longURL) : res.send(`Not a valid redirect`)
+  longURL ? res.redirect(longURL) : res.redirect(`http://localhost:8080/urls/404`)
   
 });
 
