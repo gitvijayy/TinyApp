@@ -1,34 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <% include ./partials/_header.ejs %>
+  <% include ./partials/_header.ejs %>
 </head>
 <div class="container">
-<body style="font-size:20px; padding:50px;">
-    <h1> <p class="text-center">TinyApp</p></h1>
-    <a class="btn btn-primary btn-lg btn-block" href="#" role="button">Create new TinyURL</a>
-  <table class="table">
-    <thead >
-      <tr>
-        <th scope="col">URL</th>
-        <th scope="col">TinyURL</th>    
-      </tr>
-    </thead>
-    <tbody>
-        
-      <tr>
-          
-        
-        <td><%=longURL%> </td>
-        <td><%=shortURL%></td>
-      
-      </tr>
-   
-</tbody>
-  </table>
-    
-  
-</body>
+
+  <body style="font-size:20px; padding:50px;">
+    <h1>
+      <p class="text-center">TinyApp</p>
+    </h1>
+    <a class="btn btn-primary btn-lg btn-block" href="http://localhost:8080/urls/new" role="button">Create new
+      TinyURL</a>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">URL</th>
+          <th scope="col">TinyURL</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <tr>
+
+
+          <td><%=longURL%> </td>
+          <td><%=shortURL%></td>
+
+        </tr>
+
+      </tbody>
+    </table>
+
+
+  </body>
 
 </div>
+
 </html>
