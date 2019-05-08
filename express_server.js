@@ -6,19 +6,23 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs")
 
-var urlDatabase = {
+const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
   "9sm5xK": "http://www.google.com"
 };
 
-function generateRandomString() {
-  const letters = "abcde12345";
+const generateRandomString = () => {
+  const letters = "abcdefghijklmnopqrstuvwxyz";
+  const numbers = "1234567890"
   let randomString = "";
-  for (let i = 0; i < 6; i++) {
-    randomString += letters.charAt(Math.floor(Math.random() * 10));
+  for (let i = 0; i < 3; i++) {
+    randomString += letters.charAt(Math.floor(Math.random() * 26));
+    randomString += numbers.charAt(Math.floor(Math.random() * 10));
   }
   return randomString;
 }
+
+
 
 app.get("/urls", (req, res) => {
   let templateVars = { urls: urlDatabase };
@@ -42,22 +46,27 @@ app.get("/urls/new", (req, res) => {
 
 app.get("/urls/:shortURL", (req, res) => {
   let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
-  res.render("urls_show", templateVars);
+  templateVars.longURL ? res.render("urls_show", templateVars) : res.send(`404 Not Found`);
 });
 
 app.get("/u/:shortURL", (req, res) => {
   
   const longURL = urlDatabase[req.params.shortURL];
-  res.redirect(longURL);
+  longURL ? res.redirect(longURL) : res.send(`Not a valid redirect`)
+  
 });
 
 app.post("/urls", (req, res) => {
 
   const randomString = generateRandomString();
   urlDatabase[randomString] = req.body.longURL;
-  res.redirect("/urls/" + randomString);     
+
+  res.redirect("/urls/" + randomString);
+//console.log(res.statusCode);
+
 
 });
+
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
