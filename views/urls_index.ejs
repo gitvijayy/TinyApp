@@ -12,23 +12,37 @@
           TinyURL</a>
       <table class="table">
         <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">My URLs</th>
-            <th scope="col">Update</th>
+          <tr class = "text-center" >
+            <p >
+            <th scope="col" >TimeStamp</th>
+            <th scope="col" >My URLs</th>
+            <th scope="col" ></th>
+            <th scope="col"></th>
+            <th scope="col" >Total Visits</th>
+            <th scope="col" >Unique Visits</th>
+          </p>
           </tr>
         </thead>
         <tbody>
           <% var count = 0; %>
           <% for(var key in urls) {%>
-          <tr>
-            <th scope="row"><%= count += 1 %></th>
-            <td><%=key%> : <%=urls[key]%></td>
-            <td><form method="POST" action= "/urls/<%=key%>/delete"  >
-              <button type="submit" class="btn btn-dark">Edit</button>
+          <tr class = "text-center">
+            <td ><%= count += 1 %></td>
+            <td ><%=key%> : <%=urls[key]%></td>
+            <td><form method="GET" action= "/urls/<%=key%>"  >
+              <button type="submit" class="btn btn-dark btn-block">Edit</button>
+            </form>
+            <td><form method="POST" action= "/urls/<%=key%>/delete">
               <button type="submit" class="btn btn-danger">Delete</button>
             
             </form></td>
+          </td>
+          
+              
+
+
+
+
           </tr>
           <% }%>
         </tbody>

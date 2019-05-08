@@ -7,29 +7,44 @@
 <div class="container">
 
   <body>
-      <a class="btn btn-dark btn-lg btn-block" href="http://localhost:8080/urls/new" role="button">Create new
-        TinyURL</a>
+    <a class="btn btn-dark btn-lg btn-block" href="http://localhost:8080/urls/new" role="button">Create new
+      TinyURL</a>
     <table class="table">
       <thead>
-        <tr>
-          <th scope="col">URL</th>
-          <th scope="col">Shortner</th>
-          <th scope="col">Link</th>
-        </tr>
+
+
+        <th></th>
+
       </thead>
       <tbody>
+        <tr>
+
+          <td ></td>
+          <td>
+          <form class="form-inline" action="/urls/<%=shortURL%>" method="POST">
+            <div class="form-group mb-2">
+               <strong>ShortURL: <%=shortURL%></strong> 
+              <input class="form-control" type="text" name="longURL" value=<%=longURL%> style="width: 500px; margin: 1em">
+              <button type="submit" class="btn btn-warning " style = "width: 300px"><strong>Update</strong></button>
+            </div>
+          </form>
+          </td>
+
+          
+        </tr>
+
 
         <tr>
-         <td><%=longURL%> </td>
-          <td><%=shortURL%></td>
-          <!-- <td><a href = "http://localhost:8080/urls/u/"<%= shortURL %> Click hee</a></td> -->
-
+          <td></td>
+          <td></td>
+          
         </tr>
+
 
       </tbody>
     </table>
 
-    <p  class="text-center"><a class="btn btn-dark" href="http://localhost:8080/urls" role="button">My URL List</a></p>
+    <p class="text-center"><a class="btn btn-dark" href="http://localhost:8080/urls" role="button">My URL List</a></p>
   </body>
 
 </div>
