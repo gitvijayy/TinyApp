@@ -1,10 +1,14 @@
 var express = require("express");
 var app = express();
 var PORT = 8080; // default port 8080
-const bodyParser = require("body-parser");
+var cookieParser = require('cookie-parser');
+var bodyParser = require("body-parser");
 
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.set("view engine", "ejs")
+
 
 const urlDatabase = {
   "b2xVn2": "http://www.lighthouselabs.ca",
@@ -22,10 +26,35 @@ const generateRandomString = () => {
   return randomString;
 }
 
+app.post("/urls", (req, res) => {
 
+  const randomString = generateRandomString();
+  urlDatabase[randomString] = req.body.longURL;
+
+  res.redirect("/urls/" + randomString);
+
+});
+
+app.post("/login", function (req, res) {
+   const value = req.body.username;
+  res.cookie("username",value,);
+  res.redirect(`http://localhost:8080/urls`)
+
+});
+
+app.post("/urls/:shortURL/delete", (req, res) => {
+
+  delete urlDatabase[req.params.shortURL];
+  res.redirect(`http://localhost:8080/urls`)
+  });
+
+  app.post("/urls/:id", (req, res) => {
+    urlDatabase[req.params.id] = req.body.longURL;
+    res.redirect(`http://localhost:8080/urls`)
+    });
 
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase };
+  let templateVars = { urls: urlDatabase, username: req.cookies["username"]};
   res.render("urls_index", templateVars);
 });
 
@@ -42,7 +71,8 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  let templateVars ={username: req.cookies["username"]};
+  res.render("urls_new",templateVars );
 });
 
 app.get("/urls/404", (req, res) => {
@@ -50,7 +80,7 @@ app.get("/urls/404", (req, res) => {
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
+  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], username: req.cookies["username"] };
   templateVars.longURL ? res.render("urls_show", templateVars) : res.redirect(`http://localhost:8080/urls/404`);
 });
 
@@ -61,29 +91,7 @@ app.get("/u/:shortURL", (req, res) => {
   
 });
 
-app.post("/urls", (req, res) => {
 
-  const randomString = generateRandomString();
-  urlDatabase[randomString] = req.body.longURL;
-
-  res.redirect("/urls/" + randomString);
-//console.log(res.statusCode);
-
-
-});
-
-app.post("/urls/:shortURL/delete", (req, res) => {
-
-  delete urlDatabase[req.params.shortURL];
-  res.redirect(`http://localhost:8080/urls`)
-  });
-
-  app.post("/urls/:id", (req, res) => {
-//console.log(req.params.id)
-//console.log(req.body.longURL)
-    urlDatabase[req.params.id] = req.body.longURL;
-    res.redirect(`http://localhost:8080/urls`)
-    });
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);

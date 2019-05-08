@@ -18,7 +18,22 @@
         width="200"> TinyApp</p>
   </h1>
   <!-- Add EJS code here -->
+  <%if(!username){%>
+  <form class="form-inline" action="/login" method="POST">
+    <div class="form-group mb-2">
+       
+      <label for="username"><strong>Username </strong> </label>
+      <input class="form-control" type="text" name="username" style="width: 300px; margin: 1em">
+      <button type="submit" class="btn btn-dark" style="width: 300px">Login</button>
+      
+    </div>
+  </form>
+  <% }%>
 
+  <%if(username){%>
+
+    <h3>Logged in as : <%=username%></h3>
+    <% }%>
 </body>
 </div>
 <!-- <div class="container">
