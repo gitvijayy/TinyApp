@@ -55,7 +55,7 @@ app.post("/urls", (req, res) => {
 
   const randomString = generateRandomString();
   urlDatabase[randomString] = req.body.longURL;
-  res.redirect("http://localhost:8080/urls/" + randomString);     
+  res.redirect("/urls/" + randomString);     
 
 });
 
