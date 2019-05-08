@@ -31,8 +31,21 @@
   <% }%>
 
   <%if(username){%>
-
-    <h3>Logged in as : <%=username%></h3>
+<!-- 
+    <div class="form-group mb-2"></div> -->
+        <p class = "text-center">
+      <form class="form-inline" action="/logout" method="POST">
+        <!-- <input class="form-control" name="username"> -->
+          <h3>Logged in as : <%=username%>  <button type="submit" class="btn btn-dark" style="width: 300px">Logout</button> </h3>
+          <!-- <label for="username"><strong>Username </strong> </label> -->
+          <!-- <input class="form-control" type="text" name="username" style="width: 300px; margin: 1em"> -->
+          
+       
+        
+      </form>
+    </p>
+    <!-- </div> -->
+    
     <% }%>
 </body>
 </div>
