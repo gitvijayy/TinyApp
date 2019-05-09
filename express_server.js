@@ -51,13 +51,13 @@ const emaillookup = (email) => {
 }
 
 const filterUrls = (user) => {
-  let data = {}
-  console.log(user)
+  let data = {};
+  //console.log(user)
   for (let key in urlDatabase) {
     if (urlDatabase[key]["userID"] === user) {
       data[key] = urlDatabase[key]["longURL"];
     }
-    
+  
   }
   return data;
 }
@@ -124,9 +124,19 @@ app.post("/logout", function (req, res) {
 });
 
 app.post("/urls/:shortURL/delete", (req, res) => {
-
-  delete urlDatabase[req.params.shortURL];
-  res.redirect(`http://localhost:8080/urls`)
+  let shortURL = req.params.shortURL
+  let cookie = req.cookies["user_id"]
+   
+  //let templateVars = { shortURL: shortURL, longURL: urlDatabase[shortURL]["longURL"], user: users[cookie]};
+console.log("in")
+  if(Object.keys(filterUrls(cookie)).includes(shortURL)) {
+    delete urlDatabase[req.params.shortURL];
+    res.redirect(`http://localhost:8080/urls`)
+  } else{
+    res.send("you dont have access!!")
+  }
+  
+  
 });
 
 app.post("/urls/:id", (req, res) => {
@@ -187,7 +197,13 @@ app.get("/urls/:shortURL", (req, res) => {
   //console.log(req.cookies["user_id"])
   //let access = filterUrls(req.cookies["user_id"]);
   //console.log(access);
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]["longURL"], user: users[req.cookies["user_id"]] };
+  let shortURL = req.params.shortURL
+  let cookie = req.cookies["user_id"]
+   
+  let templateVars = { shortURL: shortURL, longURL: urlDatabase[shortURL]["longURL"], user: users[cookie]};
+
+  templateVars.show = Object.keys(filterUrls(cookie)).includes(shortURL);
+  //console.log(Object.keys(filterUrls(cookie)).includes(shortURL))
   // if (access === {}) {
   //   res.redirect(`http://localhost:8080/urls/404`)
   // } else {
