@@ -11,8 +11,8 @@ app.set("view engine", "ejs")
 
 
 const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "9sm5xK": "http://www.google.com"
+  b6UTxQ: { longURL: "https://www.tsn.ca", userID: "aJ48lW" },
+  i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW" }
 };
 
 const users = {
@@ -39,53 +39,49 @@ const generateRandomString = () => {
   return randomString;
 }
 
-const emaillookup = (email,password) => {
-let checker = "";
-
-
+const emaillookup = (email) => {
   if (email) {
     for (const key in users) {
       if (email === users[key].email) {
-        
         return users[key];
       }
     }
   }
-  
   return "Not Found";
+}
+
+const filterUrls = (user) => {
+  let data = {}
+  console.log(user)
+  for (let key in urlDatabase) {
+    if (urlDatabase[key]["userID"] === user) {
+      data[key] = urlDatabase[key]["longURL"];
+    }
+    
+  }
+  return data;
 }
 
 app.post("/urls", (req, res) => {
 
   const randomString = generateRandomString();
-  urlDatabase[randomString] = req.body.longURL;
-
+  urlDatabase[randomString] = {};
+  urlDatabase[randomString]["longURL"]=req.body.longURL;
+  urlDatabase[randomString]["userID"]=req.cookies["user_id"];
   res.redirect("/urls/" + randomString);
 
 });
 
 app.post("/login", function (req, res) {
+
   let error = "n";
-  let templateVars = { type: "login", user:users[req.cookies["user_id"]], error: "n" };
   let user = emaillookup(req.body.email);
-//  console.log(req.body.email)
-//  console.log(req.body.password)
-//  console.log(user["id"])
-//  console.log(user)
- 
   if (req.body.email && req.body.password && user !== "Not Found" && user["password"] === req.body.password) {
-  
     res.cookie("user_id", user["id"]);
     res.redirect(`http://localhost:8080/urls`)
-  
-  } 
-
-
+  }
   else {
-
-    
-    
-    if(!req.body.password || !req.body.email) {
+    if (!req.body.password || !req.body.email) {
       error = "Status Code:400 // Both fields are required"
     } else if (user === "Not Found") {
       error = "Status Code:403 // Email id doesnt exist"
@@ -93,8 +89,8 @@ app.post("/login", function (req, res) {
       error = "Status Code:403 // Password is wrong"
     }
 
-    templateVars.error = error;
-    
+    let templateVars = { type: "login", user: users[req.cookies["user_id"]], error: error };
+
     res.render("urls_register", templateVars);
   }
 });
@@ -102,7 +98,6 @@ app.post("/login", function (req, res) {
 app.post("/register", function (req, res) {
 
   if (req.body.email && req.body.password && emaillookup(req.body.email) === "Not Found") {
-    
     const uniqueId = generateRandomString();
     users[uniqueId] = {};
     users[uniqueId]["id"] = uniqueId;
@@ -110,34 +105,22 @@ app.post("/register", function (req, res) {
     users[uniqueId]["password"] = req.body.password
     res.cookie("user_id", uniqueId);
     res.redirect(`http://localhost:8080/urls`)
-   
-
-  }
-  else {
+  } else {
     let error = "";
-    
-    if(!req.body.password || !req.body.email) {
+    if (!req.body.password || !req.body.email) {
       error = "Status Code:400 // Both fields are required"
     } else {
       error = "Status Code:400 // Email is already registered"
     }
-
-    
     let templateVars = { type: "register", user: users[req.cookies["user_id"]], error: error };
     res.render("urls_register", templateVars);
-
-
   }
-//console.log(users);
+
 });
 
 app.post("/logout", function (req, res) {
-  //curl -X POST -i localhost:8080/logoutconst value = req.body.user_id;
-  //res.clearCookie('name',
-  //console.log()
   res.clearCookie("user_id");
   res.redirect(`http://localhost:8080/urls`)
-
 });
 
 app.post("/urls/:shortURL/delete", (req, res) => {
@@ -147,7 +130,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 });
 
 app.post("/urls/:id", (req, res) => {
-  urlDatabase[req.params.id] = req.body.longURL;
+  urlDatabase[req.params.id]["longURL"] = req.body.longURL;
   res.redirect(`http://localhost:8080/urls`)
 });
 
@@ -161,9 +144,11 @@ app.get("/login", (req, res) => {
   res.render("urls_register", templateVars);
 });
 
+
+
 app.get("/urls", (req, res) => {
-  
-  let templateVars = { urls: urlDatabase, user: users[req.cookies["user_id"]] };
+  const userID = req.cookies["user_id"];
+  let templateVars = { urls: filterUrls(userID), user: users[userID], userID: userID };
   res.render("urls_index", templateVars);
 });
 
@@ -180,8 +165,16 @@ app.get("/hello", (req, res) => {
 });
 
 app.get("/urls/new", (req, res) => {
-  let templateVars = { user: users[req.cookies["user_id"]] };
-  res.render("urls_new", templateVars);
+
+  if (users[req.cookies["user_id"]]) {
+    let templateVars = { user: users[req.cookies["user_id"]] };
+    res.render("urls_new", templateVars);
+  } else {
+
+    res.redirect(`http://localhost:8080/urls`)
+  }
+
+
 });
 
 
@@ -191,23 +184,32 @@ app.get("/urls/404", (req, res) => {
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], user: users[req.cookies["user_id"]] };
-  templateVars.longURL ? res.render("urls_show", templateVars) : res.redirect(`http://localhost:8080/urls/404`);
-});
+  //console.log(req.cookies["user_id"])
+  //let access = filterUrls(req.cookies["user_id"]);
+  //console.log(access);
+  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]["longURL"], user: users[req.cookies["user_id"]] };
+  // if (access === {}) {
+  //   res.redirect(`http://localhost:8080/urls/404`)
+  // } else {
+    res.render("urls_show", templateVars) 
+  // }
+   
+    
+  });
 
 app.get("/u/:shortURL", (req, res) => {
 
-  const longURL = urlDatabase[req.params.shortURL];
+  //console.log(req.cookies["user_id"])
+  const longURL = urlDatabase[req.params.shortURL]["longURL"];
   longURL ? res.redirect(longURL) : res.redirect(`http://localhost:8080/urls/404`)
+  
+
+
 
 });
 
-
-
-
-
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`TinyAPP listening on port ${PORT}!`);
 });
 
 
