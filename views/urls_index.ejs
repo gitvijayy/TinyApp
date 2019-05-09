@@ -9,11 +9,11 @@
 
   <div class="container">
       <%if(!userID){%>
-      <a class="btn btn-dark btn-lg btn-block" href="http://localhost:8080/urls/new" role="button">
-        Login or register to create new TinyURL</a>
+      <p class="btn btn-dark btn-lg btn-block"  >
+        Login or register to create new TinyURL</p>
         <%}%>
 <%if(userID){%>
-  <a class="btn btn-dark btn-lg btn-block" href="http://localhost:8080/urls/new" role="button">Create new TinyURL</a>
+  <a class="btn btn-dark btn-lg btn-block" href="/urls/new" role="button">Create new TinyURL</a>
     <table class="table">
 
       <thead>

@@ -6,7 +6,7 @@ var PORT = 8080; // default port 8080
 var bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
 
-//app.use(cookieParser());
+//app.use(cookieParser())
 app.use(cookieSession({
   name: 'session',
   keys: ['abc','cde','efg','hij']
@@ -89,8 +89,8 @@ app.post("/login", function (req, res) {
   if (req.body.email && req.body.password && user !== "Not Found" && passwordChecker) {
     req.session.user_id = user["id"];
     //console.log(req.session.user_id,req.session);
-    //res.cookie("user_id", user["id"]);
-    res.redirect(`http://localhost:8080/urls`)
+    //res.cookie("user_id", user["id"])
+    res.redirect(`/urls`)
   }
   else {
     if (!req.body.password || !req.body.email) {
@@ -111,19 +111,22 @@ app.post("/register", function (req, res) {
 
   if (req.body.email && req.body.password && emaillookup(req.body.email) === "Not Found") {
     const uniqueId = generateRandomString();
-    users[uniqueId] = {};
-    users[uniqueId]["id"] = uniqueId;
-    users[uniqueId]["email"] = req.body.email
+    users[uniqueId] = {id:uniqueId,
+    email:req.body.email,
+    password: bcrypt.hashSync(req.body.password, 10)
+   };
+    // users[uniqueId]["id"] = uniqueId;
+    // users[uniqueId]["email"] = req.body.email
 
     
-    const password = req.body.password; // found in the req.params object
-     const hashedPassword = bcrypt.hashSync(password, 10);
-     users[uniqueId]["password"] = hashedPassword;
+    // const password = req.body.password; // found in the req.params object
+    //  //const hashedPassword = bcrypt.hashSync(password, 10);
+    //  users[uniqueId]["password"] = bcrypt.hashSync(password, 10);
 
 
      req.session.user_id = uniqueId;
     //res.cookie("user_id", uniqueId);
-    res.redirect(`http://localhost:8080/urls`)
+    res.redirect(`/urls`)
   } else {
     let error = "";
     if (!req.body.password || !req.body.email) {
@@ -141,7 +144,7 @@ app.post("/register", function (req, res) {
 app.post("/logout", function (req, res) {
   //res.clearCookie("user_id");
   req.session = null;
-  res.redirect(`http://localhost:8080/urls`)
+  res.redirect(`/urls`)
 });
 
 app.post("/urls/:shortURL/delete", (req, res) => {
@@ -152,7 +155,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 //console.log("in")
   if(Object.keys(filterUrls(cookie)).includes(shortURL)) {
     delete urlDatabase[req.params.shortURL];
-    res.redirect(`http://localhost:8080/urls`)
+    res.redirect(`/urls`)
   } else{
     res.send("you dont have access!!")
   }
@@ -161,18 +164,29 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 });
 
 app.post("/urls/:id", (req, res) => {
+
   urlDatabase[req.params.id]["longURL"] = req.body.longURL;
-  res.redirect(`http://localhost:8080/urls`)
+  res.redirect(`/urls`)
 });
 
 app.get("/register", (req, res) => {
+  if(!users[req.session.user_id]) {
   let templateVars = { type: "register", user: users[req.session.user_id/*req.cookies["user_id"]*/], error: "n" };
   res.render("urls_register", templateVars);
+  }else {
+    res.redirect(`/urls`)
+  }
+
 });
 
 app.get("/login", (req, res) => {
-  let templateVars = { type: "login", user: users[req.session.user_id/*req.cookies["user_id"]*/], error: "n" };
-  res.render("urls_register", templateVars);
+  if(!users[req.session.user_id]) {
+    let templateVars = { type: "login", user: users[req.session.user_id/*req.cookies["user_id"]*/], error: "n" };
+    res.render("urls_register", templateVars);
+  } else {
+    res.redirect(`/urls`)
+  }
+  
 });
 
 
@@ -184,7 +198,9 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.send("Hello!");
+  req.session.user_id ? res.redirect(`/urls`) : res.redirect(`/login`)
+ 
+  //res.send("Hello!");
 });
 
 app.get("/urls.json", (req, res) => {
@@ -202,7 +218,7 @@ app.get("/urls/new", (req, res) => {
     res.render("urls_new", templateVars);
   } else {
 
-    res.redirect(`http://localhost:8080/urls`)
+    res.redirect(`/login`)
   }
 
 
@@ -221,24 +237,32 @@ app.get("/urls/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL
   let cookie = req.session.user_id//req.cookies["user_id"]
    
+  if(urlDatabase[shortURL]){
+
+  
   let templateVars = { shortURL: shortURL, longURL: urlDatabase[shortURL]["longURL"], user: users[cookie]};
 
   templateVars.show = Object.keys(filterUrls(cookie)).includes(shortURL);
   //console.log(Object.keys(filterUrls(cookie)).includes(shortURL))
   // if (access === {}) {
-  //   res.redirect(`http://localhost:8080/urls/404`)
+  //   res.redirect(`/urls/404`)
   // } else {
     res.render("urls_show", templateVars) 
   // }
-   
+  }else { res.redirect(`/urls/404`)
+
+  }
+ 
+
     
   });
 
 app.get("/u/:shortURL", (req, res) => {
 
   //console.log(req.cookies["user_id"])
-  const longURL = urlDatabase[req.params.shortURL]["longURL"];
-  longURL ? res.redirect(longURL) : res.redirect(`http://localhost:8080/urls/404`)
+  
+  //const longURL = urlDatabase[req.params.shortURL]["longURL"];
+  urlDatabase[req.params.shortURL] ? res.redirect(urlDatabase[req.params.shortURL]["longURL"]) : res.redirect(`/urls/404`)
   
 
 

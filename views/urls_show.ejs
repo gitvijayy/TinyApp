@@ -8,7 +8,7 @@
 
   <body>
       <%if(show){%>
-    <a class="btn btn-dark btn-lg btn-block" href="http://localhost:8080/urls/new" role="button">Create new
+    <a class="btn btn-dark btn-lg btn-block" href="/urls/new" role="button">Create new
       TinyURL</a>
       
     <table class="table">
@@ -47,9 +47,13 @@
       </tbody>
     </table>
     
-    <p class="text-center"><a class="btn btn-dark" href="http://localhost:8080/urls" role="button">My URL List</a></p>
+    <p class="text-center"><a class="btn btn-dark" href="/urls" role="button">My URL List</a></p>
   </body>
   <%}%>
+<%if(!show && user){%>
+  <P> You dont own this shortURL</P>
+<%}%>
+
 </div>
 
 </html>
