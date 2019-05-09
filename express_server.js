@@ -3,6 +3,7 @@ var app = express();
 var PORT = 8080; // default port 8080
 var cookieParser = require('cookie-parser');
 var bodyParser = require("body-parser");
+const bcrypt = require('bcrypt');
 
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -76,7 +77,8 @@ app.post("/login", function (req, res) {
 
   let error = "n";
   let user = emaillookup(req.body.email);
-  if (req.body.email && req.body.password && user !== "Not Found" && user["password"] === req.body.password) {
+  let passwordChecker = bcrypt.compareSync(req.body.password, user["password"]); 
+  if (req.body.email && req.body.password && user !== "Not Found" && passwordChecker) {
     res.cookie("user_id", user["id"]);
     res.redirect(`http://localhost:8080/urls`)
   }
@@ -102,7 +104,14 @@ app.post("/register", function (req, res) {
     users[uniqueId] = {};
     users[uniqueId]["id"] = uniqueId;
     users[uniqueId]["email"] = req.body.email
-    users[uniqueId]["password"] = req.body.password
+
+    
+    const password = req.body.password; // found in the req.params object
+     const hashedPassword = bcrypt.hashSync(password, 10);
+     users[uniqueId]["password"] = hashedPassword;
+
+
+
     res.cookie("user_id", uniqueId);
     res.redirect(`http://localhost:8080/urls`)
   } else {
@@ -128,7 +137,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   let cookie = req.cookies["user_id"]
    
   //let templateVars = { shortURL: shortURL, longURL: urlDatabase[shortURL]["longURL"], user: users[cookie]};
-console.log("in")
+//console.log("in")
   if(Object.keys(filterUrls(cookie)).includes(shortURL)) {
     delete urlDatabase[req.params.shortURL];
     res.redirect(`http://localhost:8080/urls`)
