@@ -2,18 +2,21 @@
 <html lang="en">
 
 <head>
-    <% include ./partials/_header.ejs %>
+  <% include ./partials/_header.ejs %>
 </head>
-<div class="container">
 
+<body>
 
-  <body>
-      
-    <a class="btn btn-dark btn-lg btn-block" href="http://localhost:8080/urls/new" role="button">Create new
-      TinyURL</a>
+  <div class="container">
+
+    <a class="btn btn-dark btn-lg btn-block" href="http://localhost:8080/urls/new" role="button">Create new TinyURL</a>
+
     <table class="table">
+
       <thead>
+
         <tr class="text-center">
+
           <p>
             <th scope="col">TimeStamp</th>
             <th scope="col">My URLs</th>
@@ -22,36 +25,43 @@
             <th scope="col">Total Visits</th>
             <th scope="col">Unique Visits</th>
           </p>
+
         </tr>
+
       </thead>
+
       <tbody>
+
         <% var count = 0; %>
         <% for(var key in urls) {%>
+
         <tr class="text-center">
+
           <td><%= count += 1 %></td>
-          <td><%=key%> : <%=urls[key]%></td>
+          <td><a href="/u/<%=key%>"><%=key%></a> : <%=urls[key]%></td>
+
           <td>
             <form method="GET" action="/urls/<%=key%>">
               <button type="submit" class="btn btn-dark btn-block">Edit</button>
             </form>
+          </td>
+
           <td>
             <form method="POST" action="/urls/<%=key%>/delete">
               <button type="submit" class="btn btn-danger">Delete</button>
-
             </form>
           </td>
-          </td>
-
-
-
-
-
 
         </tr>
+
         <% }%>
+
       </tbody>
+
     </table>
-  </body>
-</div>
+    
+  </div>
+
+</body>
 
 </html>

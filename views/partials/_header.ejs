@@ -11,7 +11,7 @@
   <title>TinyApp</title>
   <div class="container">
 
-<body style="font-size:20px; padding:50px;">
+<body style="font-size:20px; padding:50px">
   <h1 style="font-family:Georgia" class="display-1">
 
     <p class="text-center"><img src="https://s3.amazonaws.com/f6s-public/profiles/673293_original.jpg" height="200"
@@ -19,39 +19,30 @@
   </h1>
   <!-- Add EJS code here -->
   <%if(!username){%>
-  <form class="form-inline" action="/login" method="POST">
-    <div class="form-group mb-2">
-       
-      <label for="username"><strong>Username </strong> </label>
-      <input class="form-control" type="text" name="username" style="width: 300px; margin: 1em">
-      <button type="submit" class="btn btn-dark" style="width: 300px">Login</button>
-      
-    </div>
+  <form class="form-inline" action="/login" method="POST" style="padding-left:200px">
+    <!-- <div class="form-group mb-2"> -->
+
+    <label for="username"><strong>Username </strong> </label>
+    <input class="form-control" type="text" name="username" style="width: 300px; margin: 1em">
+    <button type="submit" class="btn btn-dark" style="width: 300px">Login</button>
+
   </form>
   <% }%>
 
   <%if(username){%>
-<!-- 
-    <div class="form-group mb-2"></div> -->
-        <p class = "text-center">
-      <form class="form-inline" action="/logout" method="POST">
-        <!-- <input class="form-control" name="username"> -->
-          <h3>Logged in as : <%=username%>  <button type="submit" class="btn btn-dark" style="width: 300px">Logout</button> </h3>
-          <!-- <label for="username"><strong>Username </strong> </label> -->
-          <!-- <input class="form-control" type="text" name="username" style="width: 300px; margin: 1em"> -->
-          
-       
-        
-      </form>
-    </p>
-    <!-- </div> -->
-    
-    <% }%>
+
+  <p class="text-center">
+    <form class="form-inline" action="/logout" method="POST" style="padding-left:250px">
+
+      <h4><strong>Logged in as : <%=username%> <button type="submit" class="btn btn-dark"
+            style="width: 300px">Logout</button> </strong></h4>
+
+    </form>
+  </p>
+
+
+  <% }%>
 </body>
 </div>
-<!-- <div class="container">
-    
-</div>
 
-  </div> -->
 </head>

@@ -43,7 +43,7 @@ app.post("/login", function (req, res) {
 });
 
 app.post("/logout", function (req, res) {
-  //const value = req.body.username;
+  //curl -X POST -i localhost:8080/logoutconst value = req.body.username;
   //res.clearCookie('name',
  res.clearCookie("username",);
  res.redirect(`http://localhost:8080/urls`)
