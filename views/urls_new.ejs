@@ -5,9 +5,10 @@
   <% include ./partials/_header.ejs %>
 </head>
 
-<div class="container">
 
-  <body>
+
+<body>
+  <div class="container">
 
     <form class="form-inline" action="/urls" method="POST">
 
@@ -21,13 +22,19 @@
 
     </form>
 
+
+
     <%if(error === "y"){%>
-    <%error = "n"%>
-    Not a valid urls
+    <div class="alert alert-danger" role="alert" style="padding-top: 2%">
+      <%error = "n"%>
+      <p class="text-center">Not A Valid URL</p>
+    </div>
     <%}%>
 
-  </body>
+  </div>
 
-</div>
+</body>
+
+
 
 </html>

@@ -22,14 +22,16 @@
     <br>
 
     <%if(error !== "n"){%>
+    <div class="alert alert-danger" role="alert" style="padding-top: 2%">
 
-    <h2>
-      <p class="text-center"><%=error%>!!</p>
-    </h2>
+      <h2>
+        <p class="text-center"><%=error%>!!</p>
+      </h2>
+      <%error = "n"%>
 
-    <%error = "n"%>
-    <%}%>
-   
+    </div>
+    <%}%> 
+      
   </div>
 
 </body>

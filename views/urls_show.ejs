@@ -5,10 +5,10 @@
   <% include ./partials/_header.ejs %>
 </head>
 
-<div class="container">
 
-  <body>
 
+<body>
+  <div class="container">
     <%if(show){%>
 
     <a class="btn btn-dark btn-lg btn-block" href="/urls/new" role="button">Create new
@@ -41,8 +41,7 @@
     <div class="alert alert-dark" role="alert" style="padding-top: 2%">
 
       <p class="text-center">
-        <strong>Unique hits : <%=uniqueVisits%>&emsp;&emsp;&emsp;&emsp;</strong> <a href="/urls"
-          class=" btn btn-dark">
+        <strong>Unique hits : <%=uniqueVisits%>&emsp;&emsp;&emsp;&emsp;</strong> <a href="/urls" class=" btn btn-dark">
           HomePage</a> &emsp;&emsp;&emsp;&emsp; <strong> Total hits : <%=visits%></strong>
       </p>
 
@@ -80,9 +79,17 @@
     </table>
 
     <%}%>
+   
     <%if(!show && user){%>
-    <P> You dont own this shortURL</P>
+    <div class="alert alert-danger" role="alert" style="padding-top: 2%">
+
+      <h3>
+        <p class="text-center">401: You are not authorized to access this page | Click on logo to go back</p>
+      </h3>
+    </div>
+
     <%}%>
+
     
     </div>
 
