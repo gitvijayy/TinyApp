@@ -41,7 +41,7 @@
         <tr class="text-center">
 
           <td><%= count += 1 %></td>
-          <td><a href="/u/<%=key%>"><%=key%></a> : <%=urls[key]%></td>
+          <td><a href="/u/<%=key%>"><%=key%></a> : <%=urls[key]["longURL"]%></td>
 
           <td>
             <form method="GET" action="/urls/<%=key%>">
@@ -53,6 +53,17 @@
             <form method="POST" action="/urls/<%=key%>/delete">
               <button type="submit" class="btn btn-danger">Delete</button>
             </form>
+          </td>
+
+          <td>
+            <p class="btn btn-dark"  ><%=urls[key]["visits"]%></p>
+              
+            
+          </td>
+          <td>
+            <p class="btn btn-dark"  ><%=urls[key]["uniqueVisits"]%></p>
+              
+            
           </td>
 
         </tr>
