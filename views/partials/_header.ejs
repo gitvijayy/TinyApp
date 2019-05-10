@@ -2,72 +2,63 @@
 <html lang="en">
 
 <head>
+
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
   <title>TinyApp</title>
 
 </head>
 
 <body style="font-size:20px">
-  <div class="container">
+
+  <div class="alert alert-dark" role="alert">
+
     <h1 style="font-family:Georgia" class="display-1">
 
-      <p class = "text-center"><img src="https://s3.amazonaws.com/f6s-public/profiles/673293_original.jpg" height="200"
-          width="200"> TinyApp</p>
+      <p class="text-center text-dark"><a href="/urls"><img
+            src="https://raw.githubusercontent.com/Thinkful/bootcamp-finder/master/bootcamps/lighthouse-labs/logo.png">
+        </a>TinyApp
+      </p>
+
     </h1>
-    <!-- Add EJS code here -->
-    
-    
-      <%if(!user){%>
-      <!-- <table>
-        <thead >
 
-          <th> -->
-    <!-- <form class="form-inline" action="/login" method="GET"> -->
-      
+    <%if(!user){%>
 
-      <!-- <label for="user_id"><strong>Username </strong> </label> --> 
-      <!-- <input class="form-control" type="text" name="user_id" style="width: 300px; margin: 1em"> -->
-      <!-- <button  type="submit" class="btn btn-dark" >Login</button>
-      
-    </form> -->
-  <!-- </th>
-  <th> -->
-    <!-- <form class="form-inline" action="/register" method="GET" >
-      <button  type="submit" class="btn btn-dark" >Register</button>
+    <p class="text-center">
+      <a style="width: 16%" class="btn btn-dark" href="/login" role="button">Login</a>
+      <a style="width: 16%" class="btn btn-dark" href="/register" role="button">Register</a>
+    </p>
 
-    </form> -->
-    <!-- </th>
-  </thead>
-</table> -->
-<p class = "text-center">
-<a style = "width: 16%"class ="btn btn-info" href="/login" role="button">Login</a>
-<a style = "width: 16%"class="btn btn-info" href="/register" role="button">Register</a>
-</p>
+    <br>
+
+    <h3>
+      <p class="text-center text-danger"> Login / register to access</p>
+    </h3>
+
     <% }%>
 
     <%if(user){%>
 
-    
-      <form class="form-inline" action="/logout" method="POST" style="padding-left:250px">
+    <p class="text-center">
 
-        <h4><strong>Logged in as : <%=user.email%> <button type="submit" class="btn btn-info"
-              style="width: 300px">Logout</button> </strong></h4>
-
+      <form class="form-inline" action="/logout" method="POST" style="padding-left:600px">
+        <h5><strong>Logged in as : <%=user.email%> &emsp;&emsp;<button type="submit" class=" btn btn-danger"
+              style="width: 300px">Logout</button> </strong></h5>
       </form>
-    
-      
+
+    </p>
 
     <% }%>
 
-  
-  <!-- <div class="form-group mb-2"> -->
-    <div>
-        <br>
+  </div>
+
+  <br>
+
 </body>
 
 </html>

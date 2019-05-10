@@ -4,23 +4,24 @@
 <head>
   <% include ./partials/_header.ejs %>
 </head>
+
 <div class="container">
 
   <body>
-      <%if(show){%>
+
+    <%if(show){%>
+
     <a class="btn btn-dark btn-lg btn-block" href="/urls/new" role="button">Create new
       TinyURL</a>
-      
+
     <table class="table">
+
       <thead>
-
-
         <th></th>
-
       </thead>
+
       <tbody>
         <tr>
-
           <td></td>
           <td>
             <form class="form-inline" action="/urls/<%=shortURL%>" method="POST">
@@ -32,42 +33,31 @@
               </div>
             </form>
           </td>
-
-
         </tr>
-
-
-        <tr>
-          <td></td>
-          <td></td>
-
-        </tr>
-
-
       </tbody>
+
     </table>
 
-    
-    <p class="text-center"><a class="btn btn-dark btn-lg btn-block" href="/urls" role="button">My URL List</a></p>
+    <div class="alert alert-dark" role="alert" style="padding-top: 2%">
 
+      <p class="text-center">
+        <strong>Unique hits : <%=uniqueVisits%>&emsp;&emsp;&emsp;&emsp;</strong> <a href="/urls"
+          class=" btn btn-dark">
+          HomePage</a> &emsp;&emsp;&emsp;&emsp; <strong> Total hits : <%=visits%></strong>
+      </p>
 
+    </div>
 
-
-    <table class="table">
+    <table class="table table-dark thead-light">
 
       <thead>
-
         <tr class="text-center">
-
           <p>
-              <th scope="col">#</th>
+            <th scope="col">#</th>
             <th scope="col">TimeStamp</th>
             <th scope="col">Visitor</th>
-            
           </p>
-
         </tr>
-
       </thead>
 
       <tbody>
@@ -76,12 +66,11 @@
         <% for(var key in visitors) {%>
 
         <tr class="text-center">
-
           <td><%= count += 1 %></td>
           <td> <%=visitors[key]["timeStamp"]%></td>
-          <td>  <%=visitors[key]["userID"]%></td>
-
-
+          <td> <%=visitors[key]["userID"]%></td>
+          <td> </td>
+          <td> </td>
         </tr>
 
         <% }%>
@@ -90,20 +79,13 @@
 
     </table>
 
-
-
-
-
-
-
-
+    <%}%>
+    <%if(!show && user){%>
+    <P> You dont own this shortURL</P>
+    <%}%>
+    
+    </div>
 
   </body>
-  <%}%>
-<%if(!show && user){%>
-  <P> You dont own this shortURL</P>
-<%}%>
-
-</div>
 
 </html>

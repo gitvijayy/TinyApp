@@ -8,10 +8,7 @@
 <body>
 
   <div class="container">
-      <%if(!userID){%>
-      <p class="btn btn-dark btn-lg btn-block"  >
-        Login or register to create new TinyURL</p>
-        <%}%>
+      
 <%if(userID){%>
   <a class="btn btn-dark btn-lg btn-block" href="/urls/new" role="button">Create new TinyURL</a>
     <table class="table">
@@ -21,12 +18,11 @@
         <tr class="text-center">
 
           <p>
-            <th scope="col">TimeStamp</th>
-            <th scope="col">My URLs</th>
+            <th scope="col">#</th>
+            <th scope="col">TinyURLs</th>
             <th scope="col"></th>
             <th scope="col"></th>
-            <th scope="col">Total Visits</th>
-            <th scope="col">Unique Visits</th>
+            
           </p>
 
         </tr>
@@ -55,7 +51,7 @@
             </form>
           </td>
 
-          <td>
+          <!-- <td>
             <p class="btn btn-dark"  ><%=urls[key]["visits"]%></p>
               
             
@@ -64,7 +60,7 @@
             <p class="btn btn-dark"  ><%=urls[key]["uniqueVisits"]%></p>
               
             
-          </td>
+          </td> -->
 
         </tr>
 
