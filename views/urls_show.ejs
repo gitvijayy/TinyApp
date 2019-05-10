@@ -46,8 +46,58 @@
 
       </tbody>
     </table>
+
     
-    <p class="text-center"><a class="btn btn-dark" href="/urls" role="button">My URL List</a></p>
+    <p class="text-center"><a class="btn btn-dark btn-lg btn-block" href="/urls" role="button">My URL List</a></p>
+
+
+
+
+    <table class="table">
+
+      <thead>
+
+        <tr class="text-center">
+
+          <p>
+              <th scope="col">#</th>
+            <th scope="col">TimeStamp</th>
+            <th scope="col">Visitor</th>
+            
+          </p>
+
+        </tr>
+
+      </thead>
+
+      <tbody>
+
+        <% var count = 0; %>
+        <% for(var key in visitors) {%>
+
+        <tr class="text-center">
+
+          <td><%= count += 1 %></td>
+          <td> <%=visitors[key]["timeStamp"]%></td>
+          <td>  <%=visitors[key]["userID"]%></td>
+
+
+        </tr>
+
+        <% }%>
+
+      </tbody>
+
+    </table>
+
+
+
+
+
+
+
+
+
   </body>
   <%}%>
 <%if(!show && user){%>

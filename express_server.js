@@ -21,6 +21,10 @@ const urlDatabase = {
   i3BoGr: { longURL: "https://www.google.ca", userID: "aJ48lW", visits: 0, uniqueVisitors: [] }
 };
 
+const visitorsData = {};
+
+
+
 const users = {
   "userRandomID": {
     id: "userRandomID",
@@ -77,6 +81,7 @@ app.post("/urls", (req, res) => {
 
   const randomString = generateRandomString();
   urlDatabase[randomString] = { longURL: req.body.longURL, userID: req.session.user_id, visits: 0,uniqueVisitors: [] };
+  visitorsData[randomString] = [];
   // urlDatabase[randomString]["longURL"]=req.body.longURL;
   // urlDatabase[randomString]["userID"]=req.session.user_id;//req.cookies["user_id"];
   res.redirect("/urls/" + randomString);
@@ -248,7 +253,7 @@ app.get("/urls/:shortURL", (req, res) => {
   if (urlDatabase[shortURL]) {
 
 
-    let templateVars = { shortURL: shortURL, longURL: urlDatabase[shortURL]["longURL"], user: users[cookie] };
+    let templateVars = { shortURL: shortURL, longURL: urlDatabase[shortURL]["longURL"], user: users[cookie], visitors: visitorsData[shortURL] };
 
     templateVars.show = Object.keys(filterUrls(cookie)).includes(shortURL);
     //console.log(Object.keys(filterUrls(cookie)).includes(shortURL))
@@ -281,7 +286,7 @@ app.get("/u/:shortURL", (req, res) => {
     
     urlDatabase[req.params.shortURL]["visits"] += 1;
     
-    
+    visitorsData[req.params.shortURL].push({timeStamp: Date(), userID: req.session.user_id});
     res.redirect(urlDatabase[req.params.shortURL]["longURL"])
 
   } else {
