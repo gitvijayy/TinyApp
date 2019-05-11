@@ -102,12 +102,10 @@ app.post("/login", function (req, res) {
     res.redirect(`/urls`)
   } else {
     if (!req.body.password || !req.body.email) {
-      error = `Both fields are required`
-    } else if (user === "Not Found") {
-      error = "Email id doesnt exist"
+      error = `404: Both fields are required`
     } else {
-      error = "Password is wrong"
-    }
+      error = "404: Email or Password wrong"
+    } 
     let templateVars = { type: "login", user: users[req.session.user_id], error: error };
     res.render("urls_register", templateVars);
   }
