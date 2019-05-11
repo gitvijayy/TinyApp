@@ -7,7 +7,7 @@ var bcrypt = require(`bcrypt`);
 var moment = require(`moment`)
 var methodOverride = require(`method-override`)
 
-// override with the X-HTTP-Method-Override header in the request
+
 app.use(methodOverride(`_method`))
 
 app.use(cookieSession({
