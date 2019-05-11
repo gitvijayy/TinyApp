@@ -24,7 +24,7 @@
         <tr>
           <td></td>
           <td>
-            <form class="form-inline" action="/urls/<%=shortURL%>" method="POST">
+            <form class="form-inline" action="/urls/<%=shortURL%>/?_method=PUT" method="POST">
               <div class="form-group mb-2">
                 <strong>ShortURL: <%=shortURL%></strong>
                 <input class="form-control" type="text" name="longURL" value=<%=longURL%>

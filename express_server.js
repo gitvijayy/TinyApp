@@ -8,7 +8,7 @@ var moment = require('moment')
 var methodOverride = require('method-override')
 
 // override with the X-HTTP-Method-Override header in the request
-app.use(methodOverride('X-HTTP-Method-Override'))
+app.use(methodOverride('_method'))
 
 app.use(cookieSession({
   name: 'session',
@@ -143,7 +143,7 @@ app.post("/logout", function (req, res) {
   res.redirect(`/urls`)
 });
 
-app.post("/urls/:shortURL/delete", (req, res) => {
+app.delete("/urls/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL
   let cookie = req.session.user_id;
 // to change //////// can be shortercd 
@@ -158,7 +158,7 @@ app.post("/urls/:shortURL/delete", (req, res) => {
 });
 //// needs to be prtected can be accesed from curl
 
-app.post("/urls/:id", (req, res) => {
+app.put("/urls/:id", (req, res) => {
 
   if (!helperfunctions.validURL(req.body.longURL)) {
     res.redirect("/urls/" + req.params.id)
