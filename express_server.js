@@ -21,7 +21,7 @@ const urlDatabase = {};
 const visitorsData = {};
 const users = {};
 const helperfunctions = {
-
+  // generates a random string for userid and unique visitors
   generateRandomString: () => {
     const letters = "abcdefghijklmnopqrstuvwxyz";
     const numbers = "1234567890"
@@ -43,7 +43,7 @@ const helperfunctions = {
     }
     return "Not Found";
   },
-
+  // to filter url database based on the loggen in user
   filterUrls: (user) => {
     let data = {};
     for (let key in urlDatabase) {
@@ -71,7 +71,9 @@ const helperfunctions = {
 };
 
 app.post("/urls", (req, res) => {
-
+  
+  // if a given url is valid creates a new tinyurl 
+  // gives a error message if an invalid url has been given and redirects back to the same page
   if (helperfunctions.validURL(req.body.longURL)) {
 
     const randomString = helperfunctions.generateRandomString();
@@ -93,9 +95,12 @@ app.post("/login", function (req, res) {
   let error = "n";
 
   let user = helperfunctions.emaillookup(req.body.email);
+  //password validation for the given email id
   if (user["password"]) {
     var passwordChecker = bcrypt.compareSync(req.body.password, user["password"]);
   }
+  //checks existancee of email , correct password and redirects to the homepage
+  //if conditions aren't met gives a relevant error message and redirects to the login page
   if (req.body.email && req.body.password && user !== "Not Found" && passwordChecker) {
     req.session.user_id = user["id"];
     req.session.visitorID = user["id"];
@@ -114,6 +119,8 @@ app.post("/login", function (req, res) {
 
 app.post("/register", function (req, res) {
 
+  // checks existance of email and if not found and all the fields are entered creates the user
+  // if email already exists or all fields havent been filled out gives a relevant message and redirects
   if (req.body.email && req.body.password && helperfunctions.emaillookup(req.body.email) === "Not Found") {
     const uniqueId = helperfunctions.generateRandomString();
     users[uniqueId] = {
@@ -136,15 +143,18 @@ app.post("/register", function (req, res) {
 
 });
 
+//clears the cookies and logs out
 app.post("/logout", function (req, res) {
   req.session = null;
   res.redirect(`/urls`)
 });
 
+//deletes the short url if user owns it else gives a relevant error message
 app.delete("/urls/:shortURL", (req, res) => {
   let shortURL = req.params.shortURL
   let cookie = req.session.user_id;
-// to change //////// can be shortercd 
+
+  // to do //////// can be shortercd 
   if (Object.keys(helperfunctions.filterUrls(cookie)).includes(shortURL)) {
     delete urlDatabase[req.params.shortURL];
 
@@ -154,8 +164,8 @@ app.delete("/urls/:shortURL", (req, res) => {
   }
 
 });
-//// needs to be prtected can be accesed from curl
 
+//updates the shorturl if user owns it else redirects to 404 page
 app.put("/urls/:id", (req, res) => {
 
   if (!helperfunctions.validURL(req.body.longURL)) {
@@ -168,6 +178,7 @@ app.put("/urls/:id", (req, res) => {
   }
 });
 
+//gets registration page if user is not logged in else redirects to home page
 app.get("/register", (req, res) => {
   if (!users[req.session.user_id]) {
     let templateVars = { type: "register", user: users[req.session.user_id], error: "n" };
@@ -178,6 +189,7 @@ app.get("/register", (req, res) => {
 
 });
 
+//gets login page if user is not logged in else redirects to home page
 app.get("/login", (req, res) => {
 
   if (!users[req.session.user_id]) {
@@ -189,12 +201,14 @@ app.get("/login", (req, res) => {
 
 });
 
+//homepage if user is logged in shows relevant data else shows login and register options
 app.get("/urls", (req, res) => {
   const userID = req.session.user_id
   let templateVars = { urls: helperfunctions.filterUrls(userID), user: users[userID], userID: userID };
   res.render("urls_index", templateVars);
 });
 
+//404 error page redirection if a invalid url is entered
 app.get("/:urls", (req, res) => {
   res.redirect("/urls/404")
 });
@@ -215,10 +229,12 @@ app.get("/urls/new", (req, res) => {
 
 });
 
+//404 page
 app.get("/urls/404", (req, res) => {
   res.render("urls_error");
 });
 
+//short url details page foe updation and details about unique visits and total visits 
 app.get("/urls/:shortURL", (req, res) => {
 
   let shortURL = req.params.shortURL
@@ -241,20 +257,21 @@ app.get("/urls/:shortURL", (req, res) => {
 
 });
 
+//shorturl redirection
 app.get("/u/:shortURL", (req, res) => {
-
+  //checks for valid shorturl
   if (!urlDatabase[req.params.shortURL]) {
     res.redirect(`/urls/404`);
   }
-
+  //checks if the user exists in database and creates a vistor id if not
   if (!req.session.visitorID) {
     req.session.visitorID = helperfunctions.generateRandomString();
   }
-
+  //updates unique vistors
   if (!urlDatabase[req.params.shortURL]["uniqueVisitors"].includes(req.session.visitorID)) {
     urlDatabase[req.params.shortURL]["uniqueVisitors"].push(req.session.visitorID);
   }
-
+  
   if (urlDatabase[req.params.shortURL]) {
     urlDatabase[req.params.shortURL]["visits"] += 1;
     visitorsData[req.params.shortURL].push({
