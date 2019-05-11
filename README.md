@@ -28,6 +28,14 @@ HTML
 
 CSS
 
+## Final Product
+
+!["Landing Page"](https://github.com/gitvijayy/TinyApp/blob/master/docs/landingpage.png?raw=true)
+
+!["Home Page"](https://github.com/gitvijayy/TinyApp/blob/master/docs/homepage.png?raw=true)
+
+!["Url Details Page"](https://github.com/gitvijayy/TinyApp/blob/master/docs/update.png?raw=true)
+
 
 
  
