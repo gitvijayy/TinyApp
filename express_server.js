@@ -1,7 +1,7 @@
 var express = require(`express`);
 var cookieSession = require(`cookie-session`);
 var app = express();
-var PORT = 8080; // default port 8080
+var PORT = 8080; 
 var bodyParser = require(`body-parser`);
 var bcrypt = require(`bcrypt`);
 var moment = require(`moment`)
@@ -12,7 +12,7 @@ app.use(methodOverride(`_method`))
 
 app.use(cookieSession({
   name: `session`,
-  keys: [`abc`, `cde`, `efg`, `hij`]
+  keys: [`abc`, `cde`, `efg`, `hij`, `klm`]
 }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set(`view engine`, `ejs`);
