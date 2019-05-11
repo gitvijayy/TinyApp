@@ -8,17 +8,25 @@ Build an HTTP Server that handles requests from the browser (client).
 
 ## Dependencies
 
--body-parser
+body-parser
 
--cookie-session
--ejs
--express
--method-override
--moment
+cookie-session
+
+ejs
+
+express
+
+method-override
+
+moment
 
 ##Language 
 
--Javascript-HTML-CSS
+Javascript
+
+HTML
+
+CSS
 
 
 
